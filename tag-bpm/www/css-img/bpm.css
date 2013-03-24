@@ -1,0 +1,10 @@
+@CHARSET "UTF-8";
+
+.dotsSpinner {
+	background: url("dots-spinner-gray.gif") no-repeat scroll center center transparent;
+	display: inline-block;
+	height: 5px;
+	width: 21px;
+	margin: 0 5px 0 0;
+	padding-bottom: 5px;
+}
