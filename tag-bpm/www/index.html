@@ -11,26 +11,25 @@
 	<script src="//cdnjs.cloudflare.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
 	<script src="//cdnjs.cloudflare.com/ajax/libs/angular.js/1.1.1/angular.min.js"></script>
 	<script src="//cdnjs.cloudflare.com/ajax/libs/angular-ui/0.4.0/angular-ui.min.js"></script>
-	<script src="js/ng-upload.js" type="text/javascript"></script>
+	<script src="js/file-upload.js" type="text/javascript"></script>
+
 	<link href="//cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/2.3.1/css/bootstrap.min.css" rel="stylesheet" type="text/css" />
 	<link href="css-img/bpm.css" rel="stylesheet" type="text/css" />
 </head>
 <body>
 	<div ng-app="BpmApp" ng-controller="BpmCtrl">
-		<input type="file" id="swingOutFile" name="swingOutFile" ng-hide="swingingFileOut"
-			ui-event="{change: 'onSwingOutFileChange($event.target)'}" />
-		<br />
-		<span ng-hide="swingOutFileName">Pick an mp3 file to swing out!</span>
-		<a ng-show="swingOutFileName" ng-class="getSwingOutFileLinkClass()" ng-click="swingFileOut()">
-			<span class="dotsSpinner" ng-show="swingingFileOut"></span>
-			Swing "{{swingOutFileName}}" out!
-		</a>
-		<hr />
-		<input type="file" id="testFileInputId1" name="swingOutFile" />
-		<br />
-		<file-post id="testFileInput1" action="api/swingFileOut/index.php" callback="testUpload(success, content)">Swing file out!</file-post>
+		<form id="swingOutFileForm" action="api/swingFileOut/index.php" file-upload-form >
+			<input type="file" id="swingOutFile" name="swingOutFile" ng-hide="swingingFileOut"
+				ui-event="{change: 'onSwingOutFileChange($event.target)'}" />
+			<br />
+			<span ng-hide="swingOutFileName">Pick an mp3 file to swing out!</span>
 
-		<a config="{inputId:'testFileInputId1', action:'api/swingFileOut/index.php', callback:'testUpload(success, content)'}">Swing file out!</a>
+			<a ng-show="swingOutFileName" ng-class="getSwingOutFileLinkClass()"
+				file-upload-config="{formId:'swingOutFileForm', callback:'testUpload(success, content)'}">
+				<span class="dotsSpinner" ng-show="swingingFileOut"></span>
+				Swing "{{swingOutFileName}}" out!
+			</a>
+		</form>
 
 		<script src="js/bpmApp.js" type="text/javascript"></script>
 	</div>
