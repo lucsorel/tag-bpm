@@ -19,6 +19,7 @@
 <body>
 	<div ng-app="BpmApp" ng-controller="BpmCtrl">
 		<form id="swingOutFileForm" action="api/swingFileOut/index.php" file-upload-form >
+			<input type="hidden" name="MAX_FILE_SIZE" value="10000000" />
 			<input type="file" id="swingOutFile" name="swingOutFile" ng-hide="swingingFileOut"
 				ui-event="{change: 'onSwingOutFileChange($event.target)'}" />
 			<br />
