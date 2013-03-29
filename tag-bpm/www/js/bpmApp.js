@@ -4,9 +4,11 @@
 var bpmApp = angular.module('BpmApp', ['ui', 'fileUpload']);
 
 BpmCtrl = function($scope, $http) {
-	// the filename
+	// flags the filename and state of upload of the original tune
 	$scope.swingOutFileName = null;
 	$scope.swingingFileOut = false;
+	// the url where the original tune can be played
+	$scope.tuneUrl = null;
 
 	$scope.getSwingOutFileLinkClass = function() {
 		var linkClass = 'btn btn-primary' + ($scope.swingingFileOut ? ' disabled' : '');
@@ -14,12 +16,15 @@ BpmCtrl = function($scope, $http) {
 	};
 
 	$scope.testUpload = function(success, content) {
-		// manages the returned content of the query
+		// manages the content returned by the query
 		if (success) {
 			$scope.swingingFileOut = false;
-			alert(content);
-			resetFilePicker();
-			$scope.swingOutFileName = null;
+			var tune = $scope.$eval(content);
+			if (angular.isObject(tune) && tune.tuneUrl) {
+				resetFilePicker();
+				$scope.swingOutFileName = null;
+				$scope.tuneUrl = tune.tuneUrl;
+			}
 		}
 		// prevents 2ble posting the file
 		else {
