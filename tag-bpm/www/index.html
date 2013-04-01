@@ -15,10 +15,11 @@
 	<script src="audiojs/audio.min.js" type="text/javascript"></script>
 
 	<link href="//cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/2.3.1/css/bootstrap.min.css" rel="stylesheet" type="text/css" />
-	<link href="css-img/bpm.css" rel="stylesheet" type="text/css" />
+	<link href="css-img/bpm.css" rel="stylesheet" type="text/x-less" />
+	<script src="//cdnjs.cloudflare.com/ajax/libs/less.js/1.3.3/less.min.js" type="text/javascript"></script>
 </head>
 <body>
-	<div ng-app="BpmApp" ng-controller="BpmCtrl">
+	<div ng-app="BpmApp" ng-controller="BpmCtrl" ng-cloak>
 		<form id="swingOutFileForm" action="api/api.php?action=swingFileOut" file-upload-form >
 			<input type="hidden" name="MAX_FILE_SIZE" value="10000000" />
 			<input type="file" id="swingOutFile" name="swingOutFile" ng-hide="swingingFileOut"
@@ -36,6 +37,16 @@
 			<audio ng-show="tune" controls="controls">
 				<source src="{{tune.url}}"></source>
 			</audio>
+		</div>
+		<div>
+			<div ng-show="beatPeriods.length > 0">
+				<div class="beatPeriodsHolder" style="width: {{20*(computationLastPeriods + 2)}}px;">
+					<beat-period ng-repeat="beatPeriod in beatPeriods" bpm="{{beatPeriod.bpm}}" width="{{beatPeriodWidth(beatPeriod)}}" height="{{beatPeriodHeight(beatPeriod)}}"></beat-period>
+				</div>
+				<span>min bpm: {{bpmDisplayMin}}</span>, <span>max bpm: {{bpmDisplayMax}}</span>
+			</div>
+			<input type="text" placeholder="Tap here!"
+				ui-event="{keypress: 'onBeatTap($event)', keyup: 'clearInput($event.target)'}"/>
 		</div>
 
 		<script src="js/bpmApp.js" type="text/javascript"></script>

@@ -1,0 +1,25 @@
+@periodOutColor: #4f4f4f;
+@periodInColor: #000000;
+@periodCenterColor: #2d2d2d;
+@beatOutColor: #0B5900;
+@beatInColor: #0B5900;
+@beatCenterColor: #2A7F26;
+
+.beatPeriodBar(@borderOutColor, @borderInColor, @centerColor) {
+	background: @borderOutColor; /* Old browsers */
+	background: -moz-linear-gradient(left,  @borderOutColor 0%, @borderInColor 5%, @centerColor 50%, @borderInColor 95%, @borderOutColor 100%); /* FF3.6+ */
+	background: -webkit-gradient(linear, left top, right top, color-stop(0%,@borderOutColor), color-stop(5%,@borderInColor), color-stop(50%,@centerColor), color-stop(95%,@borderInColor), color-stop(100%,@borderOutColor)); /* Chrome,Safari4+ */
+	background: -webkit-linear-gradient(left,  @borderOutColor 0%,@borderInColor 5%,@centerColor 50%,@borderInColor 95%,@borderOutColor 100%); /* Chrome10+,Safari5.1+ */
+	background: -o-linear-gradient(left,  @borderOutColor 0%,@borderInColor 5%,@centerColor 50%,@borderInColor 95%,@borderOutColor 100%); /* Opera 11.10+ */
+	background: -ms-linear-gradient(left,  @borderOutColor 0%,@borderInColor 5%,@centerColor 50%,@borderInColor 95%,@borderOutColor 100%); /* IE10+ */
+	background: linear-gradient(to right,  @borderOutColor 0%,@borderInColor 5%,@centerColor 50%,@borderInColor 95%,@borderOutColor 100%); /* W3C */
+	filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='@borderOutColor', endColorstr='@borderOutColor',GradientType=1 ); /* IE6-9 */
+}
+
+.transition(@property: all, @duration: 0.5s, @timingFunction: ease) {
+	-webkit-transition: @arguments;
+	-moz-transition: @arguments;
+	-o-transition: @arguments;
+	-ms-transition: @arguments;
+	transition: @arguments;
+}

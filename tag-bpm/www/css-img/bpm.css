@@ -1,4 +1,4 @@
-@CHARSET "UTF-8";
+@import "design.less";
 
 .dotsSpinner {
 	background: url("dots-spinner-gray.gif") no-repeat scroll center center transparent;
@@ -7,4 +7,23 @@
 	width: 21px;
 	margin: 0 5px 0 0;
 	padding-bottom: 5px;
+}
+
+.beatPeriodsHolder {
+	background-color: black;
+	height: 100px;
+	overflow: hidden;
+
+	.beatPeriod {
+		display: inline-block;
+		height: 100%;
+		float: left;
+		.beatPeriodBar(@beatOutColor, @beatInColor, @beatCenterColor);
+		.transition(width, 0.2s, ease-out);
+
+		.bpm {
+			.beatPeriodBar(@periodOutColor, @periodInColor, @periodCenterColor);
+			.transition(height, 0.2s, ease-out);
+		}
+	}
 }

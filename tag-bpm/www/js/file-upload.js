@@ -5,7 +5,7 @@
  * - links the iframe to a form id instead of nesting them
  * - fixed a bug when inserted the iframe with jQuery
  */
-angular.module('fileUpload', []).directive('fileUploadForm', ['$parse', function($parse) {
+angular.module('fileUpload', []).directive('fileUploadForm', function() {
 	return {
 		restrict: 'A',
 		link: function(scope, element, attrs) {
@@ -29,7 +29,7 @@ angular.module('fileUpload', []).directive('fileUploadForm', ['$parse', function
 	        element.attr('encoding', 'multipart/form-data');
 		}
 	};
-}]).directive('fileUploadConfig', ['$parse', function($parse) {
+}).directive('fileUploadConfig', ['$parse', function($parse) {
 	return {
 		// only "fileUploadConfig" attribute use for the moment
 		restrict: 'A',
