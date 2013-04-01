@@ -16,7 +16,8 @@
 
 	.beatPeriod {
 		display: inline-block;
-		height: 100%;
+		/*height: 100%;*/
+		height: 100px;
 		float: left;
 		.beatPeriodBar(@beatOutColor, @beatInColor, @beatCenterColor);
 		.transition(width, 0.2s, ease-out);
@@ -26,4 +27,11 @@
 			.transition(height, 0.2s, ease-out);
 		}
 	}
+}
+.meanBpmIndicator {
+	width: 100%;
+	border: none;
+	border-bottom: solid 1px red;
+	position: relative;
+	.transition(bottom, 0.2s, ease-out);
 }

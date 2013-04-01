@@ -16,7 +16,7 @@ bpmApp.directive('beatPeriod', function() {
 /**
  * The main controller of the application
  */
-BpmCtrl = function($scope, $http) {
+BpmCtrl = function($scope, $http, $log) {
 	/** scope elements related to bpm calculation */
 	$scope.beatPeriods = [];
 	$scope.computationLastPeriods = 5;
@@ -42,10 +42,26 @@ BpmCtrl = function($scope, $http) {
 		$scope.startNewBeatPeriod(lastBeatTimestamp);
 	};
 	$scope.startNewBeatPeriod = function(lastBeatTimestamp) {
-		// removes the oldest entry if necessary (breaks the CSS transition)
-		if ($scope.beatPeriods.length > $scope.computationLastPeriods) {
-			$scope.beatPeriods[$scope.beatPeriods.length - ($scope.computationLastPeriods+1)].hide = true;
+		// removes the oldest entry if necessary (breaks the CSS transition) and subsets the periods used for the statistics
+		var periodsNb = $scope.beatPeriods.length;
+		var statPeriods = null;
+		if (periodsNb > $scope.computationLastPeriods) {
+			$scope.beatPeriods[periodsNb - ($scope.computationLastPeriods + 1)].hide = true;
+			statPeriods = $scope.beatPeriods.slice(-$scope.computationLastPeriods);
 		}
+		else {
+			statPeriods = $scope.beatPeriods;
+		}
+		// computes the mean bpm
+		if (statPeriods.length > 0) {
+			var bpmSum = 0;
+			angular.forEach(statPeriods, function(statPeriod, index) {
+				bpmSum += statPeriod.bpm;
+			}, bpmSum);
+			$scope.meanBpm = Math.round(bpmSum / statPeriods.length);
+		}
+
+		// starts a new beat period
 		$scope.beatPeriods.push({start: lastBeatTimestamp, end: null, bpm:null});
 	}
 	// returns the height percentage of a beat period given the scope min and max range of display
@@ -62,6 +78,9 @@ BpmCtrl = function($scope, $http) {
 	$scope.beatPeriodWidth = function(beatPeriod) {
 		return beatPeriod.hide ? 0 : 20;
 	}
+	$scope.meanBpmStyle = function() {
+		return {bottom: Math.round(100 * $scope.meanBpm / $scope.bpmDisplayMax) + '%'};
+	};
 
 	/** scope elements related to tune file upload */
 	// flags the filename and state of upload of the original tune
