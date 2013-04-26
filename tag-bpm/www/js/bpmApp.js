@@ -3,12 +3,22 @@
 // the BPM application depends on the angularUI and fileUpload modules
 var bpmApp = angular.module('BpmApp', ['ui', 'fileUpload']);
 
-// adds a directive for displaying the beat periods used to compute the mean bpm
+//adds a directive for displaying the beat periods used to compute the mean bpm
 bpmApp.directive('beatPeriod', function() {
 	return {
 		template: '<div class="beatPeriod" title="{{bpm}}" style="width:{{width}}px;"><div class="bpm" style="height: {{100 - height}}%;"></div></div>',
 		replace: true,
 		scope: {height: '@', width: '@', bpm: '@'},
+		restrict: 'E'
+	};
+});
+
+//adds a directive for displaying a tune in an audio HTML tag
+bpmApp.directive('tunePlayer', function() {
+	return {
+		template: '<audio controls="controls" ng-src="{{url}}"></audio>',
+		replace: true,
+		scope: {url: '@'},
 		restrict: 'E'
 	};
 });

@@ -34,9 +34,7 @@
 			</a>
 		</form>
 		<div>
-			<audio ng-show="tune" controls="controls">
-				<source src="{{tune.url}}"></source>
-			</audio>
+			<tune-player ui-if="tune" url="{{tune.url}}"></tune-player>
 		</div>
 		<div>
 			<div style="width: {{20*(computationLastPeriods + 2)}}px;">
