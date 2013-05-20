@@ -31,6 +31,8 @@ BpmCtrl = function($scope, $http, $log) {
 	$scope.beatPeriods = [];
 	$scope.computationLastPeriods = 5;
 	$scope.bpmDisplayMin = 0;
+
+	/** clears the BPM input field */
 	$scope.clearInput = function(tapInputElement) {
 		tapInputElement.value = "";
 	};
@@ -57,8 +59,9 @@ BpmCtrl = function($scope, $http, $log) {
 		// starts a new beat period
 		$scope.startNewBeatPeriod(lastBeatTimestamp);
 	};
+	/** updates the BPM computation with the given timestamp */
 	$scope.startNewBeatPeriod = function(lastBeatTimestamp) {
-		// removes the oldest entry if necessary (breaks the CSS transition) and subsets the periods used for the statistics
+		// hides the timestamp entries not used in the BPM computation and subsets the periods used for the statistics
 		var periodsNb = $scope.beatPeriods.length;
 		var statPeriods = null;
 		if (periodsNb > $scope.computationLastPeriods) {
@@ -90,10 +93,11 @@ BpmCtrl = function($scope, $http, $log) {
 			return 0;
 		}
 	};
-	// gives 0 width to hidden periods
+	// styles hidden beat periods with 0 width
 	$scope.beatPeriodWidth = function(beatPeriod) {
 		return beatPeriod.hide ? 0 : 20;
 	}
+	// displays the mean BPM line
 	$scope.meanBpmStyle = function() {
 		return {bottom: Math.round(100 * $scope.meanBpm / $scope.bpmDisplayMax) + '%'};
 	};
@@ -129,6 +133,7 @@ BpmCtrl = function($scope, $http, $log) {
 		}
 	}
 
+	/** displays the name of the sent file */
 	$scope.onSwingOutFileChange = function(fileInput) {
 		if (fileInput && angular.isString(fileInput.value) && (fileInput.value.length > 0)) {
 			$scope.swingOutFileName = fileInput.value;
