@@ -34,6 +34,8 @@ BpmCtrl = function($scope, $http, $log) {
 	$scope.clearInput = function(tapInputElement) {
 		tapInputElement.value = "";
 	};
+
+	/** called when pressing a key in the BPM input field */
 	$scope.onBeatTap = function(keyPressEvent) {
 		// flags the last beat timestamp before storing the new one
 		var lastBeatTimestamp = keyPressEvent.timeStamp;
@@ -41,6 +43,10 @@ BpmCtrl = function($scope, $http, $log) {
 		// retrieves and completes the last beat period (has a start but no end timestamp)
 		if (beatPeriodsNb > 0) {
 			var lastBeatPeriod = $scope.beatPeriods[beatPeriodsNb - 1];
+			// avoids division-by-zero when pressing several keys at the same time
+			if (lastBeatPeriod.start == lastBeatTimestamp) {
+				return;
+			}
 			lastBeatPeriod.end = lastBeatTimestamp;
 			lastBeatPeriod.bpm = Math.round(60000/(lastBeatPeriod.end - lastBeatPeriod.start));
 			var maxBpm = 10 * (Math.round(lastBeatPeriod.bpm / 10) + 1 );

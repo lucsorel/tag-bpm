@@ -36,6 +36,7 @@
 		<div>
 			<tune-player ui-if="tune" url="{{tune.url}}"></tune-player>
 		</div>
+
 		<div>
 			<div style="width: {{20*(computationLastPeriods + 2)}}px;">
 				<div class="beatPeriodsHolder">
@@ -43,7 +44,7 @@
 				</div>
 				<div class="meanBpmIndicator" ng-style="meanBpmStyle()"></div>
 			</div>
-			<input type="text" placeholder="Tap the tempo here!"
+			<input type="text" placeholder="Tap the tempo here with any key!"
 				ui-event="{keypress: 'onBeatTap($event)', keyup: 'clearInput($event.target)'}"/>
 			<br />
 			<span>max bpm: {{bpmDisplayMax}}, mean bpm: {{meanBpm}}</span>
