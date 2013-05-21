@@ -101,6 +101,10 @@ BpmCtrl = function($scope, $http, $log) {
 	$scope.meanBpmStyle = function() {
 		return {bottom: Math.round(100 * $scope.meanBpm / $scope.bpmDisplayMax) + '%'};
 	};
+	// styles the beat periods holder
+	$scope.bpmBeatPeriodsStyle = function() {
+		return {width: (20*($scope.computationLastPeriods + 2))+"px"};
+	};
 
 	/** scope elements related to tune file upload */
 	// flags the filename and state of upload of the original tune
@@ -109,6 +113,7 @@ BpmCtrl = function($scope, $http, $log) {
 	// the url where the original tune can be played
 	$scope.tune = null;
 
+	// styles the tune upload file link
 	$scope.getSwingOutFileLinkClass = function() {
 		var linkClass = 'btn btn-primary' + ($scope.swingingFileOut ? ' disabled' : '');
 		return linkClass;
