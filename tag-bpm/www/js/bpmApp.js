@@ -27,10 +27,16 @@ bpmApp.directive('tunePlayer', function() {
  * The main controller of the application
  */
 BpmCtrl = function($scope, $http, $log) {
-	/** scope elements related to bpm calculation */
-	$scope.beatPeriods = [];
+	$scope.secondsBeforeReseting = 5;
 	$scope.computationLastPeriods = 5;
 	$scope.bpmDisplayMin = 0;
+	/** resets the model elements involved in the BPM computation and focuses on the tap input */
+	$scope.resetBpm = function() {
+		$scope.beatPeriods = [];
+		$scope.bpmDisplayMax = null;
+		$scope.meanBpm = null;
+		$("#bpmTapInput").focus();
+	};
 
 	/** clears the BPM input field */
 	$scope.clearInput = function(tapInputElement) {
@@ -46,17 +52,25 @@ BpmCtrl = function($scope, $http, $log) {
 		if (beatPeriodsNb > 0) {
 			var lastBeatPeriod = $scope.beatPeriods[beatPeriodsNb - 1];
 			// avoids division-by-zero when pressing several keys at the same time
-			if (lastBeatPeriod.start == lastBeatTimestamp) {
+			if (lastBeatTimestamp == lastBeatPeriod.start) {
 				return;
 			}
-			lastBeatPeriod.end = lastBeatTimestamp;
-			lastBeatPeriod.bpm = Math.round(60000/(lastBeatPeriod.end - lastBeatPeriod.start));
-			var maxBpm = 10 * (Math.round(lastBeatPeriod.bpm / 10) + 1 );
-			// updates the max value of displayed bpms
-			$scope.bpmDisplayMax = $scope.bpmDisplayMax ? Math.max($scope.bpmDisplayMax, maxBpm) : maxBpm;
+
+			// resets the BPM model elements if it has been too long since the last beat
+			if (lastBeatTimestamp - lastBeatPeriod.start > 1000*$scope.secondsBeforeReseting) {
+				$scope.resetBpm();
+			}
+			// computes the last BPM and updates the display otherwise
+			else {
+				lastBeatPeriod.end = lastBeatTimestamp;
+				lastBeatPeriod.bpm = Math.round(60000/(lastBeatPeriod.end - lastBeatPeriod.start));
+				var maxBpm = 10 * (Math.round(lastBeatPeriod.bpm / 10) + 1 );
+				// updates the max value of displayed bpms
+				$scope.bpmDisplayMax = $scope.bpmDisplayMax ? Math.max($scope.bpmDisplayMax, maxBpm) : maxBpm;
+			}
 		}
 
-		// starts a new beat period
+		// starts a new beat period corresponding to the given tap
 		$scope.startNewBeatPeriod(lastBeatTimestamp);
 	};
 	/** updates the BPM computation with the given timestamp */
@@ -147,6 +161,9 @@ BpmCtrl = function($scope, $http, $log) {
 			$scope.swingOutFileName = null;
 		}
 	};
+
+	// initializes the model elements
+	$scope.resetBpm();
 };
 
 $(document).ready(resetFilePicker);
