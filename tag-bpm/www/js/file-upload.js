@@ -19,7 +19,7 @@ angular.module('fileUpload', []).directive('fileUploadForm', function() {
 	        // appends a timestamp field to the url to prevent browser caching results
 	        var timestamp = new Date().getTime();
 	        var formAction = element.attr('action');
-	        if (formAction.contains('?')) {
+	        if (formAction.indexOf('?') > -1) {
 				formAction += '&_t=' + timestamp;
 			} else {
 				formAction += '?_t=' + timestamp;
