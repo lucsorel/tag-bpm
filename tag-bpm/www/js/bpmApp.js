@@ -113,11 +113,11 @@ BpmCtrl = function($scope, $http, $log) {
 	}
 	// displays the mean BPM line
 	$scope.meanBpmStyle = function() {
-		return {bottom: Math.round(100 * $scope.meanBpm / $scope.bpmDisplayMax) + '%'};
+		return {bottom: Math.round(100 * $scope.meanBpm / $scope.bpmDisplayMax) + 'px'};
 	};
 	// styles the beat periods holder
 	$scope.bpmBeatPeriodsStyle = function() {
-		return {width: (20*($scope.computationLastPeriods + 2))+"px"};
+		return {width: (20*($scope.computationLastPeriods + 2)) + 'px'};
 	};
 
 	/** scope elements related to tune file upload */
