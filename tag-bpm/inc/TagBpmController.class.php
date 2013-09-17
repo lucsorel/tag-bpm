@@ -39,17 +39,31 @@ class TagBpmController {
 	}
 
 	/**
+	 * Retrieves the request value associated with the given parameter name, null if the request is undefined
+	 * or if it does not have the given parameter key.
+	 * 
+	 * @param String $paramName
+	 * @return mixed|NULL
+	 */
+	protected function getRequestValue($paramName) {
+		if (is_string($paramName) && strlen(trim($paramName)) > 0 && is_array($_REQUEST) && array_key_exists($paramName, $_REQUEST)) {
+			return $_REQUEST[$paramName];
+		}
+
+		return null;
+	}
+
+	/**
 	 * Retrieves and performs the action expected by the API
 	 * @return string
 	 */
 	public function manageRequest() {
 		// retrieves the action to perform
-		if (! is_array($_REQUEST) || ! array_key_exists('action', $_REQUEST)) {
+		if (is_null($action = $this->getRequestValue('action'))) {
 			return Response::noAction()->setMessage('no action defined in the API call')->toJson();
 		}
 
 		// checks that the action exists
-		$action = $_REQUEST['action'];
 		if (! is_callable(array($this, $action), true)) {
 			return Response::undefinedAction()->setMessage('action \'' 
 					. $action . '\' not implemented in this API')->toJson();
