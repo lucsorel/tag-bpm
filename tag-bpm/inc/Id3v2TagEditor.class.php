@@ -33,6 +33,14 @@ class Id3v2TagEditor extends getID3 {
 	public function updateBpm($bpm) {
 	}
 
+	/**
+	 * Iterates over the keys array to browse the multidimensional matrix
+	 * and returns the value associated to the last key, or null if not found
+	 * 
+	 * @param array $matrix
+	 * @param array $keysArray
+	 * @return mixed
+	 */
 	private function findMatrixValueByPathArray($matrix, $keysArray) {
 		$foundValue = null;
 		if (is_array($matrix) && is_array($keysArray)) {
@@ -47,6 +55,7 @@ class Id3v2TagEditor extends getID3 {
 				$foundValue = $subArray;
 			}
 		}
+
 		return $foundValue;
 	}
 }
