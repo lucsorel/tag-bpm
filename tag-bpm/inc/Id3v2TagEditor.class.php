@@ -17,7 +17,7 @@ class Id3v2TagEditor extends getID3 {
 		$this->id3Id3v2->Analyze();
 		// attempts to retrieve the bpm in its dedicated tag
 		$this->foundBpm = $this->findMatrixValueByPathArray($this->info, array('id3v2', 'TBPM', 0, 'data'));
-		// attempts to find the bpm in the comment field
+		// or attempts to find the bpm in the comment field
 		if ($this->foundBpm == null) {
 			$this->foundBpm = $this->findMatrixValueByPathArray($this->info, array('id3v2', 'comments', 'bpm', 0));
 		}
