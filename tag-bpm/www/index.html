@@ -52,6 +52,7 @@
 			<button class="btn" type="button" ng-click="resetBpm()">Reset</button>
 		</div>
 
+		<a class="btn" ui-if="tune && meanBpm" href="api/api.php?action=updateTuneBpm&filename={{tune.filename}}&newBpm={{meanBpm}}">Set {{meanBpm}} bpm to {{tune.filename}}</a>
 		<script src="js/bpmApp.js" type="text/javascript"></script>
 	</div>
 </body>

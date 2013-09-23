@@ -1,4 +1,5 @@
 <?php
+require_once('Id3v2TagEditor.class.php');
 require_once('Response.class.php');
 require_once('Tune.class.php');
 
@@ -10,7 +11,7 @@ require_once('Tune.class.php');
  * @param string $errline
  */
 function tagBpmErrorHandler($errno, $errstr, $errfile, $errline) {
-	$log = date(DateTime::W3C) . ' ['.$errno . '] in '.$errfile .' on line ' . $errline . ': ' . $errstr . "\n"; 
+	$log = date(DateTime::W3C) . ' [errno '.$errno . '] in '.$errfile .' on line ' . $errline . ': ' . $errstr . "\n"; 
 	file_put_contents( dirname(dirname(__FILE__)).'/logs/php.errors', $log,  FILE_APPEND);
 }
 
@@ -112,6 +113,38 @@ class TagBpmController {
 		}
 		else {
 			return Response::uploadedFileSaveError()->setMessage('failed to save ' . $tuneFilename);
+		}
+	}
+
+	/**
+	 * Updates the bpm of the given tune
+	 * 
+	 * @return Ambigous <Response, Response>
+	 */
+	protected function updateTuneBpm() {
+		$filename = $this->getRequestValue('filename');
+		$newBpm = $this->getRequestValue('newBpm');
+
+		// creates a tune from the filename
+		$tuneFilename = dirname(dirname(__FILE__)) . '/www/tunes/' . $filename;
+		if (!file_exists($tuneFilename)) {
+			return Response::undefinedTuneFile()->setMessage('could not find ' . $filename . ' on the server');
+		}
+		else {
+			// updates the bpm
+			$tuneMp3Editor = new Id3v2TagEditor($tuneFilename);
+			$tuneMp3Editor->updateBpm($newBpm);
+
+			// sends the updated file to the client
+			header($_SERVER['SERVER_PROTOCOL'] . ' 200 OK');
+			header('Cache-Control: public'); // needed for i.e.
+			header('Content-Type: audio/mpeg');
+			header('Content-Transfer-Encoding: Binary');
+			header('Content-Length:' . filesize($tuneFilename));
+			header('Content-Disposition: attachment; filename='. $newBpm . 'bpm_' . $filename);
+			readfile($tuneFilename);
+
+			die();
 		}
 	}
 }
